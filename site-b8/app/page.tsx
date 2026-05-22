@@ -244,7 +244,7 @@ export default function Home() {
 
           <h1 style={{ fontSize: 'clamp(2.6rem, 5.5vw, 5rem)', color: CREAM, marginBottom: '1.4rem', fontWeight: 300, lineHeight: 1.1 }}>
             Stop {' '}
-            <em className="animate-shimmer">wasting timer</em>{' '}
+            <em className="animate-shimmer">wasting time</em>{' '}
             chasing leads{' '}
             <em className="animate-shimmer">manually</em>{' '}
           </h1>
