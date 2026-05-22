@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'B8 Technologies — CRM Intelligence for Luxury Real Estate',
+  title: 'B8 Technologies — CRM Intelligence for Real Estate Agencies',
   description: 'B8 Technologies automates luxury real estate lead capture with AI-powered CRM systems. Serving agencies in the Gulf and Asia.',
   keywords: 'CRM automation, luxury real estate, AI lead generation, Make, Clay, Gulf real estate, Dubai, Saudi Arabia',
   openGraph: {

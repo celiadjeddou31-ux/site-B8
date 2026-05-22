@@ -22,19 +22,24 @@ const LIVE_LEADS = [
 
 const STEPS = [
   {
-    n: '01', title: 'Capture',
-    body: "Your Tidio chatbot and contact forms collect every visitor's intent, budget, and decision timeline — even outside office hours.",
-    sub: 'Powered by Tidio AI + custom qualification scripts',
+    n: '01',
+    title: 'Capture',
+    body: "Your website automatically captures visitor intent, budget, and buying timeline through a form or/and a chatbot even outside business hours.",
+    sub: 'Every interaction becomes a qualified opportunity.',
   },
+
   {
-    n: '02', title: 'Enrich',
-    body: "Clay pulls LinkedIn data, company revenue signals, and wealth indicators on each contact automatically. Your team sees the full picture before the first call.",
-    sub: '200 + data sources enriched in real time',
+    n: '02',
+    title: 'Qualify',
+    body: "Each lead is automatically enriched with high-value business and profile insights, giving your team the context needed before the first conversation even begins.",
+    sub: 'Complete lead visibility without manual research.',
   },
+
   {
-    n: '03', title: 'Route',
-    body: "Make triggers the right sequence: hot leads ring your phone within minutes, warm leads enter a personalised nurture flow, cold leads receive targeted content.",
-    sub: 'Zero manual sorting. Every lead treated correctly.',
+    n: '03',
+    title: 'Automate',
+    body: "Every lead is instantly routed into the right follow-up journey based on intent, urgency, and profile quality — ensuring faster responses and more efficient conversions.",
+    sub: 'Tailor-made workflows built to scale your pipeline.',
   },
 ]
 
@@ -79,7 +84,7 @@ const FAQS = [
     a: 'We combine luxury real estate lead psychology with technical automation precision. A buyer from Riyadh and one from Singapore have completely different decision journeys. Our systems know the difference.' },
 ]
 
-const TOOLS = ['Clay', 'Make', 'Tidio', 'Salesforce', 'HubSpot', 'OpenAI', 'Zapier', 'Notion']
+const TOOLS = ['Gain Time', 'Hot Leads', 'CRM', 'Salesforce', 'HubSpot', 'Clay', '', 'Notion']
 
 const STATUS_COLOR: Record<string, string> = {
   hot:  'bg-red-400 animate-pulse-glow',
@@ -234,17 +239,18 @@ export default function Home() {
           {/* Eyebrow */}
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', fontSize: '.65rem', letterSpacing: '.2em', textTransform: 'uppercase', color: GOLD, border: `1px solid ${BORDER}`, padding: '.4rem .9rem', marginBottom: '1.8rem' }}>
             <span className="animate-pulse-glow" style={{ width: 7, height: 7, borderRadius: '50%', background: GOLD, display: 'inline-block', flexShrink: 0 }} />
-            AI-Powered CRM · Luxury Real Estate
+            Tailor made  CRM · High-converting leads 
           </div>
 
           <h1 style={{ fontSize: 'clamp(2.6rem, 5.5vw, 5rem)', color: CREAM, marginBottom: '1.4rem', fontWeight: 300, lineHeight: 1.1 }}>
-            Your next{' '}
-            <em className="animate-shimmer">high-value buyer</em>{' '}
-            is already on your site.
+            Stop {' '}
+            <em className="animate-shimmer">wasting timer</em>{' '}
+            chasing leads{' '}
+            <em className="animate-shimmer">manually</em>{' '}
           </h1>
 
           <p style={{ fontSize: '1.05rem', color: TEXT_MUTED, maxWidth: 500, marginBottom: '1.6rem', lineHeight: 1.8 }}>
-            B8 Technologies builds automated CRM systems that capture, qualify, and route leads from your luxury real estate website — across the Gulf and Asia — before a competitor even picks up the phone.
+            We build tailor-made AI automation systems for luxury real estate agencies — from lead capture to qualification and follow-up — so your team can focus on closing high-value deals instead of wasting time on manual workflows.
           </p>
 
           <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '.5rem .9rem', marginBottom: '2.2rem' }}>
@@ -475,12 +481,12 @@ export default function Home() {
           <p style={{ display: 'block', fontSize: '.72rem', color: TEXT_MUTED, letterSpacing: '.04em', fontStyle: 'italic', margin: '1.2rem 0 2rem' }}>
             No sales pitch. No pressure. Just clarity about what&apos;s possible.
           </p>
-          <a href="mailto:hello@b8-technologies.com" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
+          <a href="mailto:celia.barquis@b8-technologies.com" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = GOLD)}
             onMouseLeave={e => (e.currentTarget.style.color = TEXT_MUTED)}>
             hello@b8-technologies.com
           </a>
-        </div>
+        </div> 
       </section>
 
 
