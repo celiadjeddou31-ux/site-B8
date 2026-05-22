@@ -153,7 +153,7 @@ export default function Home() {
 
           {/* Logo */}
           <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexShrink: 0 }}>
-            <LogoSvg color={GOLD} size={36} />
+            <LogoSvg color={GOLD} size={96} />
             <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.15rem', color: CREAM, letterSpacing: '.02em', whiteSpace: 'nowrap' }}>
               B8 Technologies
             </span>
@@ -489,7 +489,7 @@ export default function Home() {
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 2rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '4rem' }}>
             <div>
-              <LogoSvg color={GOLD} size={38} style={{ marginBottom: '1.4rem' }} />
+              <LogoSvg color={GOLD} size={96} style={{ marginBottom: '1.4rem' }} />
               <p style={{ fontSize: '.84rem', color: TEXT_MUTED, lineHeight: 1.7 }}>
                 AI-powered CRM automation<br />for luxury real estate agencies.
               </p>
