@@ -82,8 +82,8 @@ const FAQS = [
 const TOOLS = ['Clay', 'Make', 'Tidio', 'Salesforce', 'HubSpot', 'OpenAI', 'Zapier', 'Notion']
 
 const STATUS_COLOR: Record<string, string> = {
-  hot:  'bg-orange-400 animate-pulse-glow',
-  warm: 'bg-amber-500',
+  hot:  'bg-red-400 animate-pulse-glow',
+  warm: 'bg-rose-700',
   new:  'bg-emerald-400',
 }
 
@@ -126,16 +126,16 @@ export default function Home() {
 
   const year = new Date().getFullYear()
 
-  /* ── shared style tokens ── */
-  const GOLD        = '#C9A84C'
-  const GOLD_LIGHT  = '#E8C97A'
-  const CREAM       = '#F5F0E8'
-  const CHARCOAL    = '#1A1A16'
-  const DARK_CARD   = '#141410'
-  const BORDER      = 'rgba(201,168,76,0.15)'
-  const TEXT_MUTED  = '#8A8A7A'
-  const TEXT_BODY   = '#C8C8B8'
-  const BLACK       = '#0A0A08'
+  /* ── shared style tokens — palette extracted from #7A1930 logo ── */
+  const GOLD        = '#7A1930'   /* logo burgundy — primary accent   */
+  const GOLD_LIGHT  = '#A8334F'   /* hover / shimmer lighter tone     */
+  const CREAM       = '#F5F0E8'   /* logo background — warm cream     */
+  const CHARCOAL    = '#1A1215'   /* section alt — warm dark          */
+  const DARK_CARD   = '#150D0F'   /* card bg — near black w/ warmth   */
+  const BORDER      = 'rgba(122,25,48,0.22)'
+  const TEXT_MUTED  = '#8A7A7D'   /* warm grey                        */
+  const TEXT_BODY   = '#C8C0BE'   /* warm off-white                   */
+  const BLACK       = '#0D0A0B'   /* warm black                       */
 
   return (
     <main style={{ minHeight: '100vh', background: BLACK }}>
@@ -226,8 +226,8 @@ export default function Home() {
       {/* ══ HERO ══════════════════════════════════════════════════ */}
       <section style={{ maxWidth: 1180, margin: '0 auto', padding: '8rem 2rem 5rem', display: 'flex', alignItems: 'center', gap: '4rem', minHeight: '100vh', position: 'relative' }}>
         {/* Glows */}
-        <div style={{ position: 'fixed', top: 0, left: '-20%', width: 700, height: 700, background: 'radial-gradient(circle at 30% 40%, rgba(107,26,42,.18) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
-        <div style={{ position: 'fixed', top: '20%', right: '-10%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'fixed', top: 0, left: '-20%', width: 700, height: 700, background: 'radial-gradient(circle at 30% 40%, rgba(122,25,48,.22) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'fixed', top: '20%', right: '-10%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(122,25,48,.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
         {/* Left copy */}
         <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }} className="animate-slide-up">
@@ -287,7 +287,7 @@ export default function Home() {
                 <li key={i} style={{
                   display: 'flex', alignItems: 'center', gap: '.7rem',
                   padding: '.6rem 1rem', borderBottom: `1px solid rgba(255,255,255,.03)`,
-                  background: i === activeLead ? 'rgba(201,168,76,.05)' : 'transparent',
+                  background: i === activeLead ? 'rgba(122,25,48,.07)' : 'transparent',
                   transition: 'background .3s',
                 }}>
                   <span className={STATUS_COLOR[lead.status]} style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0 }} />
@@ -351,7 +351,7 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginTop: '3.5rem' }}>
             {RESULTS.map((r, i) => (
               <div key={i} className="reveal" style={{ transitionDelay: `${i * 100}ms`, padding: '2.5rem 2rem', border: `1px solid ${BORDER}`, background: DARK_CARD, textAlign: 'center' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(201,168,76,.4)')}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(122,25,48,.4)')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = BORDER)}>
                 <dt style={{ display: 'block', fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.8rem, 4.5vw, 4.2rem)', color: GOLD, fontWeight: 300, lineHeight: 1, marginBottom: '.8rem' }}>{r.n}</dt>
                 <dd style={{ fontSize: '.82rem', color: TEXT_MUTED, lineHeight: 1.55 }}>{r.label}</dd>
@@ -370,7 +370,7 @@ export default function Home() {
           <ul style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '3.5rem' }}>
             {SERVICES.map((sv, i) => (
               <li key={i} className="reveal" style={{ transitionDelay: `${i * 80}ms`, padding: '2rem', border: `1px solid ${BORDER}`, background: DARK_CARD, transition: 'border-color .25s, transform .25s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(201,168,76,.35)'; e.currentTarget.style.transform = 'translateY(-3px)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(122,25,48,.35)'; e.currentTarget.style.transform = 'translateY(-3px)' }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = BORDER; e.currentTarget.style.transform = 'translateY(0)' }}>
                 <span style={{ display: 'block', fontSize: '1.4rem', color: GOLD, marginBottom: '1rem' }}>{sv.g}</span>
                 <h3 style={{ fontSize: '1.25rem', color: CREAM, marginBottom: '.7rem' }}>{sv.title}</h3>
@@ -393,7 +393,7 @@ export default function Home() {
           <ul style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
             {MARKETS.map((m, i) => (
               <li key={i} className="reveal" style={{ transitionDelay: `${i * 70}ms`, display: 'flex', alignItems: 'center', gap: '.75rem', padding: '1.2rem 1.4rem', border: `1px solid ${BORDER}`, background: DARK_CARD, transition: 'border-color .2s' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(201,168,76,.35)')}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(122,25,48,.35)')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = BORDER)}>
                 <span style={{ fontSize: '1.5rem', lineHeight: 1, flexShrink: 0 }}>{m.flag}</span>
                 <div>
@@ -408,10 +408,10 @@ export default function Home() {
 
 
       {/* ══ PHILOSOPHY QUOTE ═════════════════════════════════════ */}
-      <div className="reveal" style={{ padding: '5.5rem 0', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, background: 'linear-gradient(180deg, transparent, rgba(107,26,42,.05), transparent)' }}>
+      <div className="reveal" style={{ padding: '5.5rem 0', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, background: 'linear-gradient(180deg, transparent, rgba(122,25,48,.06), transparent)' }}>
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 2rem' }}>
           <blockquote style={{ position: 'relative', maxWidth: 780, margin: '0 auto 2rem', textAlign: 'center' }}>
-            <span aria-hidden="true" style={{ position: 'absolute', top: '-2.5rem', left: '50%', transform: 'translateX(-50%)', fontFamily: "'Cormorant Garamond', serif", fontSize: '7rem', color: 'rgba(201,168,76,.1)', lineHeight: 1, userSelect: 'none' }}>&ldquo;</span>
+            <span aria-hidden="true" style={{ position: 'absolute', top: '-2.5rem', left: '50%', transform: 'translateX(-50%)', fontFamily: "'Cormorant Garamond', serif", fontSize: '7rem', color: 'rgba(122,25,48,.1)', lineHeight: 1, userSelect: 'none' }}>&ldquo;</span>
             <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.45rem, 2.8vw, 2.1rem)', color: CREAM, fontWeight: 300, lineHeight: 1.45, fontStyle: 'italic', position: 'relative' }}>
               The best negotiators never split the difference — they architect the conversation so the other side{' '}
               <em style={{ fontStyle: 'normal', color: GOLD }}>wants</em> to say yes.
@@ -454,7 +454,7 @@ export default function Home() {
 
       {/* ══ CONTACT CTA ══════════════════════════════════════════ */}
       <section id="contact" style={{ padding: '7rem 0', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(107,26,42,.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(122,25,48,.15) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div className="reveal" style={{ maxWidth: 680, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1, padding: '0 2rem' }}>
           <div style={{ fontSize: '.65rem', letterSpacing: '.25em', textTransform: 'uppercase', color: GOLD, marginBottom: '1.1rem' }}>Let&apos;s Talk</div>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.3rem, 4.5vw, 3.8rem)', color: CREAM, margin: '1rem 0 1.4rem', fontWeight: 300 }}>
@@ -584,9 +584,9 @@ function H2({ cream, gold, children }: { cream: string; gold: string; children: 
 function StepCard({ step, dark, border, gold, cream, muted }: { step: typeof STEPS[0]; dark: string; border: string; gold: string; cream: string; muted: string }) {
   return (
     <div style={{ padding: '2.5rem', border: `1px solid ${border}`, background: dark, transition: 'border-color .3s, transform .3s', height: '100%' }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(201,168,76,.35)'; e.currentTarget.style.transform = 'translateY(-4px)' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(122,25,48,.35)'; e.currentTarget.style.transform = 'translateY(-4px)' }}
       onMouseLeave={e => { e.currentTarget.style.borderColor = border; e.currentTarget.style.transform = 'translateY(0)' }}>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '4rem', color: 'rgba(201,168,76,.1)', lineHeight: 1, marginBottom: '1.2rem', fontWeight: 300 }}>{step.n}</div>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '4rem', color: 'rgba(122,25,48,.1)', lineHeight: 1, marginBottom: '1.2rem', fontWeight: 300 }}>{step.n}</div>
       <h3 style={{ fontSize: '1.55rem', color: cream, marginBottom: '.9rem' }}>{step.title}</h3>
       <p style={{ fontSize: '.87rem', color: muted, lineHeight: 1.75, marginBottom: '1.4rem' }}>{step.body}</p>
       <div style={{ fontSize: '.64rem', letterSpacing: '.1em', textTransform: 'uppercase', color: gold, paddingTop: '1rem', borderTop: `1px solid ${border}` }}>{step.sub}</div>

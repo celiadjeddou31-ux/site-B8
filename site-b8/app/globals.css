@@ -1,28 +1,28 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
-@theme {
-  --color-black: #0A0A08;
-  --color-charcoal: #1A1A16;
-  --color-dark-card: #141410;
-  --color-cream: #F5F0E8;
-  --color-gold: #C9A84C;
-  --color-gold-light: #E8C97A;
-  --color-burgundy: #6B1A2A;
-  --color-muted: #8A8A7A;
-  --color-body: #C8C8B8;
-  --color-border: rgba(201,168,76,0.15);
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'DM Sans', sans-serif;
-}
+/* ─── PALETTE ───────────────────────────────────────────────────
+   Extracted from B8 logo: #7A1930 (burgundy)
+   Full system built around it:
+   - Accent primary  : #7A1930  (logo burgundy)
+   - Accent light    : #A8334F  (hover / shimmer mid)
+   - Accent muted    : #5C1224  (deep shadow burgundy)
+   - Cream background: #F5F0E8  (logo background tone)
+   - Black           : #0D0A0B  (warm black, hints of burgundy)
+   - Charcoal        : #1A1215  (section alt bg)
+   - Dark card       : #150D0F  (card bg)
+   - Border          : rgba(122,25,48,0.22)
+   - Text body       : #C8C0BE  (warm grey)
+   - Text muted      : #8A7A7D  (warm muted)
+──────────────────────────────────────────────────────────────── */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: #0A0A08;
-  color: #C8C8B8;
+  background-color: #0D0A0B;
+  color: #C8C0BE;
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   line-height: 1.7;
@@ -37,23 +37,24 @@ h1, h2, h3, h4 {
 
 a { color: inherit; text-decoration: none; }
 
-::selection { background: #C9A84C; color: #0A0A08; }
+::selection { background: #7A1930; color: #F5F0E8; }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0A0A08; }
-::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #0D0A0B; }
+::-webkit-scrollbar-thumb { background: #7A1930; border-radius: 2px; }
 
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: 0% center; }
+  0%   { background-position: 0% center; }
   100% { background-position: 200% center; }
 }
 @keyframes pulseGlow {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  50%       { opacity: 0.35; }
 }
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 30px rgba(201,168,76,.08); }
-  50%       { box-shadow: 0 0 60px rgba(201,168,76,.22); }
+  0%, 100% { box-shadow: 0 0 30px rgba(122,25,48,.10); }
+  50%       { box-shadow: 0 0 60px rgba(122,25,48,.28); }
 }
 @keyframes scrollX {
   0%   { transform: translateX(0); }
@@ -63,24 +64,22 @@ a { color: inherit; text-decoration: none; }
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes chipIn {
-  from { opacity: 0; transform: translate(var(--tx, 0), var(--ty, 0)); }
-  to   { opacity: 1; transform: translate(0, 0); }
-}
 
+/* ─── UTILITY CLASSES ────────────────────────────────────────── */
 .animate-shimmer {
-  background: linear-gradient(90deg, #C9A84C, #E8C97A, #C9A84C);
-  background-size: 200% auto;
+  background: linear-gradient(90deg, #7A1930, #C45A72, #A8334F, #7A1930);
+  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 5s linear infinite;
+  animation: shimmer 6s linear infinite;
 }
 .animate-pulse-glow { animation: pulseGlow 1.8s ease-in-out infinite; }
 .animate-glow       { animation: glow 4s ease-in-out infinite; }
 .animate-scroll-x   { animation: scrollX 22s linear infinite; }
 .animate-slide-up   { animation: slideUp .9s ease both; }
 
+/* ─── SCROLL REVEAL ──────────────────────────────────────────── */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
