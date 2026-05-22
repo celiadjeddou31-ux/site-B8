@@ -1,682 +1,511 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
-import s from './page.module.css'
+import { useState, useEffect } from 'react'
 
-/* ─── DATA ─────────────────────────────────────────────────── */
+/* ─── DATA ──────────────────────────────────────────────────── */
 
-const NAV_LINKS = [
-  { label: 'Method', href: '#method' },
-  { label: 'Results', href: '#results' },
-  { label: 'Services', href: '#services' },
-  { label: 'Markets', href: '#markets' },
-  { label: 'FAQ', href: '#faq' },
-]
-
-const LIVE_LEADS = [
-  { name: 'Al-Rashid Family Office', market: 'Riyadh 🇸🇦', value: '€ 6.2M', status: 'hot'  },
-  { name: 'Zhang Wei Investments',   market: 'Shanghai 🇨🇳', value: '€ 3.8M', status: 'warm' },
-  { name: 'Patel Group Holdings',    market: 'Mumbai 🇮🇳',   value: '€ 2.1M', status: 'warm' },
-  { name: 'Al-Maktoum Associates',   market: 'Dubai 🇦🇪',    value: '€ 9.4M', status: 'hot'  },
-  { name: 'Tan & Partners SG',       market: 'Singapore 🇸🇬', value: '€ 4.7M', status: 'new'  },
-]
-
-const STEPS = [
+const faqs = [
   {
-    n: '01',
-    title: 'Capture',
-    body: 'Your Tidio chatbot and contact forms collect every visitor\'s intent, budget, and decision timeline — even outside office hours.',
-    sub: 'Powered by Tidio AI + custom qualification scripts',
+    q: 'What exactly does the B8 system do?',
+    a: 'We build a fully automated pipeline that captures leads from your luxury real estate clients' websites via Tidio chatbots and contact forms, enriches them in Clay, orchestrates intelligent follow-ups via Make, and delivers fully qualified, context-rich prospects directly into their CRM — with zero manual effort.',
   },
   {
-    n: '02',
-    title: 'Enrich',
-    body: 'Clay pulls LinkedIn data, company revenue signals, and wealth indicators on each contact automatically. Your team sees the full picture before the first call.',
-    sub: '200 + data sources enriched in real time',
+    q: 'Which markets do you specialize in?',
+    a: 'We specialize in Gulf markets (Saudi Arabia, UAE, Qatar) and key Asian markets (China, India, Malaysia, Singapore). We understand the cultural nuances, time zones, and buying behavior unique to high-net-worth individuals in these regions.',
   },
   {
-    n: '03',
-    title: 'Route',
-    body: 'Make triggers the right sequence: hot leads ring your phone within minutes, warm leads enter a personalised nurture flow, cold leads receive targeted content.',
-    sub: 'Zero manual sorting. Every lead treated correctly.',
+    q: 'How long does it take to go live?',
+    a: 'Our typical onboarding is 2–3 weeks from the first discovery call to a live, tested pipeline. We handle the full technical build — you simply connect your tools and watch the leads appear.',
+  },
+  {
+    q: 'Do my agency clients need to change their website?',
+    a: 'No significant changes required. We integrate with their existing Tidio chatbot and contact forms. If they don\'t have a chatbot yet, we help configure one as part of the engagement at no extra cost.',
+  },
+  {
+    q: 'Is this a one-time project or ongoing?',
+    a: 'Both options are available. Most clients start with a project engagement, then transition to a monthly retainer for continuous optimization, A/B testing, and support as their market evolves.',
+  },
+  {
+    q: 'Why only 3 client slots per quarter?',
+    a: 'We build bespoke systems — not copy-paste automations. Every client receives our full attention during onboarding and configuration. Limiting intake is how we protect delivery quality and your results.',
   },
 ]
 
-const RESULTS = [
-  { n: '3×',   label: 'More qualified leads captured per month, on average' },
-  { n: '90 %', label: 'Reduction in manual data entry and follow-up tasks'  },
-  { n: '48 h', label: 'Average time from first call to fully live system'   },
-  { n: '24/7', label: 'Automated lead capture — while your team sleeps'     },
+const problems = [
+  { icon: '🕐', title: 'Leads visiting at 2AM Dubai time', desc: 'Your team is offline. The prospect fills in a form or chats — and hears nothing back. By morning, they\'ve called someone else.' },
+  { icon: '🌐', title: 'Multi-timezone, multi-language buyers', desc: 'A UHNW buyer in Shanghai shouldn\'t fall through the cracks just because they browsed your listing at the wrong hour.' },
+  { icon: '📋', title: 'Chatbot data sitting in a silo', desc: 'Tidio captures rich conversations — but they never automatically reach your CRM. That\'s revenue sitting in a dashboard no one checks.' },
+  { icon: '🔄', title: 'Manual follow-up taking 24–72 hours', desc: 'By the time your team sees the lead, the prospect has already toured a competitor\'s property. Speed is the new service.' },
+  { icon: '📊', title: 'Zero lead enrichment', desc: 'You get a first name and an email. No LinkedIn, no company, no buying intent signal. How do you prioritize without context?' },
+  { icon: '💸', title: 'Marketing spend you can\'t attribute', desc: 'You invest in ads and SEO across multiple markets, but you can\'t trace which source drives your highest-value closings.' },
 ]
 
-const SERVICES = [
-  {
-    glyph: '◈',
-    title: 'CRM Automation',
-    body: 'Clay + Make pipelines that enrich, score, and route every lead. Your agents close deals — they never touch data entry again.',
-  },
-  {
-    glyph: '◉',
-    title: 'AI Lead Capture',
-    body: 'Tidio chatbots trained on your listings. They qualify Gulf and Asian buyers in their cultural context, around the clock.',
-  },
-  {
-    glyph: '◇',
-    title: 'Smart Form Intelligence',
-    body: 'Adaptive forms that extract intent, budget, and timeline from every visitor before the first conversation starts.',
-  },
-  {
-    glyph: '◈',
-    title: 'Multi-Market Routing',
-    body: 'Different qualification rules for Riyadh, Dubai, Singapore, and Mumbai. Cultural nuance is engineered into every workflow.',
-  },
-  {
-    glyph: '◉',
-    title: 'Pipeline Analytics',
-    body: 'Live dashboards showing lead velocity, source quality, and conversion rates by market. Know exactly what\'s working.',
-  },
-  {
-    glyph: '◇',
-    title: 'Integration & Maintenance',
-    body: 'We connect to your existing stack and keep everything running. One point of contact. Zero technical overhead for you.',
-  },
+const systemNodes = [
+  { step: '01', label: 'Website Visitor', icon: '👤', desc: 'HNW prospect lands on your agency client\'s luxury listing website' },
+  { step: '02', label: 'Tidio Capture', icon: '💬', desc: 'Chatbot or contact form captures intent, language, timezone & contact details' },
+  { step: '03', label: 'Make Automation', icon: '⚡', desc: 'Instant trigger: data is cleaned, structured, translated if needed & routed' },
+  { step: '04', label: 'Clay Enrichment', icon: '🔍', desc: 'Lead enriched with LinkedIn, company data, wealth signals & intent scoring' },
+  { step: '05', label: 'CRM + Alert', icon: '🎯', desc: 'Fully qualified profile in CRM + real-time Slack/email alert to your sales team' },
 ]
 
-const MARKETS = [
-  { flag: '🇸🇦', country: 'Saudi Arabia', cities: 'Riyadh · Jeddah'       },
-  { flag: '🇦🇪', country: 'UAE',           cities: 'Dubai · Abu Dhabi'     },
-  { flag: '🇶🇦', country: 'Qatar',         cities: 'Doha'                  },
-  { flag: '🇨🇳', country: 'China',         cities: 'Shanghai · Beijing'    },
-  { flag: '🇮🇳', country: 'India',         cities: 'Mumbai · New Delhi'    },
-  { flag: '🇲🇾', country: 'Malaysia',      cities: 'Kuala Lumpur'          },
-  { flag: '🇸🇬', country: 'Singapore',     cities: 'City-State'            },
+const gulfMarkets = [
+  { flag: '🇸🇦', name: 'Saudi Arabia', detail: 'Vision 2030 mega-project real estate surge' },
+  { flag: '🇦🇪', name: 'United Arab Emirates', detail: 'Dubai & Abu Dhabi ultra-luxury market' },
+  { flag: '🇶🇦', name: 'Qatar', detail: 'Post-World Cup luxury demand & sovereign wealth' },
 ]
 
-const FAQS = [
-  {
-    q: 'Who is B8 Technologies built for?',
-    a: 'Luxury real estate agencies in the Gulf (Saudi Arabia, UAE, Qatar) and Asia (China, India, Malaysia, Singapore) that want to capture and convert high-net-worth leads — without growing their headcount.',
-  },
-  {
-    q: 'What exactly do you automate?',
-    a: 'We connect your website chatbot (Tidio) and contact forms to a Clay CRM pipeline, orchestrated via Make. Every lead is enriched, scored, and routed to the right agent in real time — 24 hours a day.',
-  },
-  {
-    q: 'How long does implementation take?',
-    a: 'Most systems go live within 7–14 business days. We handle the full setup, integration, and QA. You don\'t touch a single line of code.',
-  },
-  {
-    q: 'We already have a CRM — does that matter?',
-    a: 'Not at all. Clay and Make connect to over 200 tools. Your existing CRM becomes smarter without being replaced. We augment, not disrupt.',
-  },
-  {
-    q: 'What does it cost?',
-    a: 'Every engagement is scoped to your specific lead volume and markets. Book a call — we\'ll map your current pipeline and send a transparent proposal within 48 hours. No hidden fees, ever.',
-  },
-  {
-    q: 'Why B8 Technologies and not a generic automation agency?',
-    a: 'We combine luxury real estate lead psychology with technical automation precision. A buyer from Riyadh and one from Singapore have completely different decision journeys. Our systems know the difference.',
-  },
+const asiaMarkets = [
+  { flag: '🇨🇳', name: 'China', detail: 'UHNW buyers seeking international asset diversification' },
+  { flag: '🇮🇳', name: 'India', detail: 'Rapidly growing ultra-luxury appetite' },
+  { flag: '🇲🇾', name: 'Malaysia', detail: 'Strategic Southeast Asia gateway' },
+  { flag: '🇸🇬', name: 'Singapore', detail: 'Prime hub for pan-Asian wealth management' },
 ]
 
-const TOOLS = ['Clay', 'Make', 'Tidio', 'Salesforce', 'HubSpot', 'OpenAI', 'Zapier', 'Notion']
+const stats = [
+  { num: '< 3 min', label: 'Visitor-to-CRM time' },
+  { num: '100%',   label: 'Lead capture rate' },
+  { num: '24 / 7', label: 'System uptime' },
+  { num: '8+',     label: 'Markets covered' },
+]
+
+const processSteps = [
+  {
+    num: '01',
+    title: 'Discovery Call',
+    sub: '45 minutes · No obligation',
+    desc: 'We map your current lead flow, pinpoint the exact drop-off points, and calculate the revenue you\'re losing every month. You leave with clarity whether we work together or not.',
+  },
+  {
+    num: '02',
+    title: 'System Build',
+    sub: '2–3 weeks · Done-for-you',
+    desc: 'Our team builds the full Clay + Make + Tidio automation stack, connects it to your CRM, and tests every touchpoint across your target markets. You don\'t touch a line of code.',
+  },
+  {
+    num: '03',
+    title: 'Go Live & Scale',
+    sub: 'Ongoing · Continuous optimization',
+    desc: 'Your pipeline goes live. Leads start flowing into your CRM within minutes. We monitor, optimize, and iterate — so your system captures more, better, every single week.',
+  },
+]
 
 /* ─── COMPONENT ─────────────────────────────────────────────── */
 
 export default function Home() {
-  const [scrolled,  setScrolled]  = useState(false)
-  const [menuOpen,  setMenuOpen]  = useState(false)
-  const [openFaq,   setOpenFaq]   = useState<number | null>(null)
-  const [activeLead, setActiveLead] = useState(0)
-  const observerRef = useRef<IntersectionObserver | null>(null)
+  const [openFaq, setOpenFaq]     = useState<number | null>(null)
+  const [scrolled, setScrolled]   = useState(false)
+  const [menuOpen, setMenuOpen]   = useState(false)
 
-  /* scroll-aware nav */
+  /* Navbar scroll effect */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
+    const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* intersection-observer fade-ins */
-  const registerFades = useCallback(() => {
-    observerRef.current?.disconnect()
-    observerRef.current = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add(s.visible) }),
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+  /* Scroll-reveal animation */
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     )
-    document.querySelectorAll(`.${s.reveal}`).forEach(el => observerRef.current!.observe(el))
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
-  useEffect(() => {
-    registerFades()
-    return () => observerRef.current?.disconnect()
-  }, [registerFades])
-
-  /* cycling live-lead highlight */
-  useEffect(() => {
-    const id = setInterval(() => setActiveLead(p => (p + 1) % LIVE_LEADS.length), 2200)
-    return () => clearInterval(id)
-  }, [])
-
-  /* close menu on resize */
+  /* Close mobile menu on resize */
   useEffect(() => {
     const onResize = () => { if (window.innerWidth > 768) setMenuOpen(false) }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  const year = new Date().getFullYear()
+  const CALENDLY = 'https://calendly.com/b8-technologies' // ← remplacez par votre lien Calendly
 
   return (
-    <main className={s.root}>
-
-      {/* ══════════════════════════════════════════
-          NAV
-      ══════════════════════════════════════════ */}
-      <header className={`${s.nav} ${scrolled ? s.navSolid : ''}`}>
-        <div className={s.navWrap}>
-
-          {/* Logo */}
-          <a href="#" className={s.logoLink} aria-label="B8 Technologies home">
-            <svg viewBox="0 0 90 60" className={s.logoSvg} aria-hidden="true">
-              {/* stylised B */}
-              <path
-                d="M8 4 L8 56 L34 56 C44 56 52 49 52 40 C52 34 48 29 42 27
-                   C47 25 51 20 51 14 C51 8 45 4 35 4 Z
-                   M18 12 L33 12 C38 12 41 15 41 19 C41 23 38 26 33 26 L18 26 Z
-                   M18 34 L34 34 C40 34 42 37 42 41 C42 45 39 48 34 48 L18 48 Z"
-                fill="currentColor"
-              />
-              {/* figure-8 / infinity */}
-              <path
-                d="M65 30 C65 22 70 16 77 16 C84 16 89 22 89 30 C89 38 84 44 77 44
-                   C70 44 65 38 65 30 Z
-                   M57 30 C57 22 62 16 69 16 C63 21 63 39 69 44 C62 44 57 38 57 30 Z"
-                fill="currentColor"
-                opacity="0.7"
-              />
-            </svg>
-            <span className={s.logoText}>B8 Technologies</span>
+    <>
+      {/* ══════════════════ NAVBAR ══════════════════ */}
+      <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+        <div className="container navbar__inner">
+          {/* Logo — placez votre fichier dans /public/logo.png */}
+          <a href="#hero" aria-label="B8 Technologies - Home">
+            <img
+              src="/logo.png"
+              alt="B8 Technologies"
+              className="navbar__logo"
+              style={{ height: 44, width: 'auto', objectFit: 'contain' }}
+            />
           </a>
 
-          {/* Desktop links */}
-          <nav className={s.navLinks} aria-label="Main navigation">
-            {NAV_LINKS.map(l => (
-              <a key={l.href} href={l.href} className={s.navLink}>{l.label}</a>
-            ))}
-          </nav>
+          <div className={`navbar__links ${menuOpen ? 'navbar__links--open' : ''}`}>
+            <a href="#system"  onClick={() => setMenuOpen(false)}>The System</a>
+            <a href="#markets" onClick={() => setMenuOpen(false)}>Markets</a>
+            <a href="#process" onClick={() => setMenuOpen(false)}>Process</a>
+            <a href="#faq"     onClick={() => setMenuOpen(false)}>FAQ</a>
+          </div>
 
-          {/* CTA */}
-          <a href="#contact" className={s.navCta}>Book a Call</a>
-
-          {/* Burger */}
-          <button
-            className={`${s.burger} ${menuOpen ? s.burgerOpen : ''}`}
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-          >
-            <span /><span /><span />
-          </button>
-        </div>
-
-        {/* Mobile drawer */}
-        <div className={`${s.drawer} ${menuOpen ? s.drawerOpen : ''}`} aria-hidden={!menuOpen}>
-          {NAV_LINKS.map(l => (
-            <a
-              key={l.href}
-              href={l.href}
-              className={s.drawerLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              {l.label}
-            </a>
-          ))}
-          <a href="#contact" className={s.drawerCta} onClick={() => setMenuOpen(false)}>
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="btn btn--primary">
             Book a Call
           </a>
+
+          <button
+            className="navbar__burger"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
-      </header>
+      </nav>
 
+      <main>
+        {/* ══════════════════ HERO ══════════════════ */}
+        <section className="hero" id="hero">
+          <div className="hero__bg-grid" aria-hidden="true" />
 
-      {/* ══════════════════════════════════════════
-          HERO
-      ══════════════════════════════════════════ */}
-      <section className={s.hero}>
-        {/* ambient glows */}
-        <div className={s.glowLeft}  aria-hidden="true" />
-        <div className={s.glowRight} aria-hidden="true" />
+          <div className="container hero__inner">
+            <div className="tag fade-in">AI-Powered CRM Automation · Luxury Real Estate</div>
 
-        <div className={s.heroInner}>
-          {/* Left — copy */}
-          <div className={s.heroLeft}>
-            <div className={s.eyebrow}>
-              <span className={s.pulse} aria-hidden="true" />
-              AI-Powered CRM · Luxury Real Estate
-            </div>
-
-            <h1 className={s.heroTitle}>
-              Your next{' '}
-              <em className={s.heroEm}>high-value buyer</em>{' '}
-              is already on your site.
+            <h1 className="hero__title fade-in fade-in--delay-1">
+              Your Next <em>$10M Deal</em><br />
+              Just Left Your Website.<br />
+              Did You Capture It?
             </h1>
 
-            <p className={s.heroBody}>
-              B8 Technologies builds automated CRM systems that capture, qualify,
-              and route leads from your luxury real estate website — across the Gulf
-              and Asia — before a competitor even picks up the phone.
+            <p className="hero__sub fade-in fade-in--delay-2">
+              B8 Technologies builds automated CRM pipelines that capture every high-value prospect
+              from luxury real estate agency websites — from Dubai to Singapore —
+              <strong> before they vanish forever.</strong>
             </p>
 
-            {/* Micro social proof — Cialdini: Social Proof + Authority */}
-            <ul className={s.proofPills} aria-label="Trust signals">
-              <li>✦ 7 markets covered</li>
-              <li>✦ Live in under 14 days</li>
-              <li>✦ Zero setup fee</li>
-            </ul>
-
-            <div className={s.heroCtas}>
-              <a href="#contact" className={s.btnPrimary}>
+            <div className="hero__ctas fade-in fade-in--delay-3">
+              <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
                 Book a Free Strategy Call
-                <ArrowRight />
               </a>
-              <a href="#method" className={s.btnGhost}>See How It Works</a>
+              <a href="#system" className="btn btn--ghost btn--lg">
+                See How It Works →
+              </a>
             </div>
 
-            {/* Voss: scarcity without pressure */}
-            <p className={s.heroNote}>
-              We onboard a limited number of agencies per quarter to guarantee quality.
-            </p>
+            <div className="hero__scarcity fade-in fade-in--delay-4">
+              <span className="pulse-dot" aria-hidden="true" />
+              Only <strong>3 client slots</strong> available this quarter
+            </div>
           </div>
 
-          {/* Right — live dashboard mock */}
-          <div className={s.heroRight} aria-hidden="true">
-            <div className={s.dashCard}>
-              {/* window chrome */}
-              <div className={s.dashChrome}>
-                <span className={s.dot} style={{background:'#FF6058'}} />
-                <span className={s.dot} style={{background:'#FFBE2E'}} />
-                <span className={s.dot} style={{background:'#28C840'}} />
-                <span className={s.dashLabel}>Lead Pipeline — Live</span>
-                <span className={s.liveBadge}>● LIVE</span>
-              </div>
+          <div className="hero__scroll-indicator" aria-hidden="true">
+            <span />
+          </div>
+        </section>
 
-              {/* lead rows */}
-              <ul className={s.leadList}>
-                {LIVE_LEADS.map((lead, i) => (
-                  <li
-                    key={i}
-                    className={`${s.leadRow} ${i === activeLead ? s.leadActive : ''}`}
-                  >
-                    <span className={`${s.statusDot} ${s[lead.status]}`} />
-                    <span className={s.leadInfo}>
-                      <span className={s.leadName}>{lead.name}</span>
-                      <span className={s.leadMarket}>{lead.market}</span>
-                    </span>
-                    <span className={s.leadValue}>{lead.value}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* footer bar */}
-              <div className={s.dashFooter}>
-                <span>17 new leads today</span>
-                <span className={s.dashUptime}>99.9 % uptime</span>
-              </div>
-            </div>
-
-            {/* floating stat chips */}
-            <div className={`${s.chip} ${s.chipA}`}>
-              <span className={s.chipVal}>+340 %</span>
-              <span className={s.chipLbl}>Lead qualification rate</span>
-            </div>
-            <div className={`${s.chip} ${s.chipB}`}>
-              <span className={s.chipVal}>{'< 90 s'}</span>
-              <span className={s.chipLbl}>Time to first lead response</span>
+        {/* ══════════════════ TRUST BAR ══════════════════ */}
+        <div className="trust-bar">
+          <div className="container">
+            <p className="trust-bar__label">POWERED BY</p>
+            <div className="trust-bar__logos">
+              {['Clay', 'Make', 'Tidio', 'HubSpot', 'Salesforce'].map((tool) => (
+                <span key={tool} className="trust-bar__logo">{tool}</span>
+              ))}
             </div>
           </div>
         </div>
-      </section>
 
-
-      {/* ══════════════════════════════════════════
-          TRUST BAR
-      ══════════════════════════════════════════ */}
-      <div className={s.trustBar}>
-        <div className={s.trustScroll} aria-label="Integrated tools">
-          {[...TOOLS, ...TOOLS].map((t, i) => (
-            <span key={i} className={s.trustItem}>{t}</span>
-          ))}
-        </div>
-      </div>
-
-
-      {/* ══════════════════════════════════════════
-          METHOD
-      ══════════════════════════════════════════ */}
-      <section id="method" className={s.section}>
-        <div className={s.wrap}>
-          <div className={`${s.reveal} ${s.label}`}>The Method</div>
-
-          <h2 className={`${s.reveal} ${s.h2}`}>
-            From web visitor to<br />
-            <em>qualified prospect</em> in 90 seconds.
-          </h2>
-
-          <p className={`${s.reveal} ${s.lead}`}>
-            Most luxury agencies lose 70 % of their inbound leads to silence.
-            We engineer the system that closes that gap — permanently.
-          </p>
-
-          <ol className={s.steps} aria-label="Three-step method">
-            {STEPS.map((step, i) => (
-              <li
-                key={i}
-                className={`${s.reveal} ${s.stepCard}`}
-                style={{ transitionDelay: `${i * 120}ms` }}
-              >
-                <div className={s.stepN}>{step.n}</div>
-                <h3 className={s.stepTitle}>{step.title}</h3>
-                <p className={s.stepBody}>{step.body}</p>
-                <div className={s.stepSub}>{step.sub}</div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          RESULTS
-      ══════════════════════════════════════════ */}
-      <section id="results" className={`${s.section} ${s.sectionAlt}`}>
-        <div className={s.wrap}>
-          <div className={`${s.reveal} ${s.label}`}>The Results</div>
-
-          <h2 className={`${s.reveal} ${s.h2}`}>
-            Numbers that change<br />
-            <em>how you work.</em>
-          </h2>
-
-          <dl className={s.resultsGrid}>
-            {RESULTS.map((r, i) => (
-              <div
-                key={i}
-                className={`${s.reveal} ${s.resultCard}`}
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                <dt className={s.resultN}>{r.n}</dt>
-                <dd className={s.resultLbl}>{r.label}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          SERVICES
-      ══════════════════════════════════════════ */}
-      <section id="services" className={s.section}>
-        <div className={s.wrap}>
-          <div className={`${s.reveal} ${s.label}`}>Services</div>
-
-          <h2 className={`${s.reveal} ${s.h2}`}>
-            Everything your agency needs<br />
-            <em>to stop losing leads.</em>
-          </h2>
-
-          <ul className={s.servGrid} aria-label="Service list">
-            {SERVICES.map((sv, i) => (
-              <li
-                key={i}
-                className={`${s.reveal} ${s.servCard}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <span className={s.servGlyph} aria-hidden="true">{sv.glyph}</span>
-                <h3 className={s.servTitle}>{sv.title}</h3>
-                <p className={s.servBody}>{sv.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          MARKETS
-      ══════════════════════════════════════════ */}
-      <section id="markets" className={`${s.section} ${s.sectionAlt}`}>
-        <div className={s.wrap}>
-          <div className={`${s.reveal} ${s.label}`}>Markets</div>
-
-          <h2 className={`${s.reveal} ${s.h2}`}>
-            Where the world's<br />
-            <em>luxury buyers come from.</em>
-          </h2>
-
-          <p className={`${s.reveal} ${s.lead}`}>
-            High-net-worth buyers from the Gulf and Asia now represent the fastest-growing
-            segment of global luxury real estate acquisitions. We are already embedded
-            in these markets — and we bring that knowledge into every system we build.
-          </p>
-
-          <ul className={s.marketsGrid} aria-label="Markets served">
-            {MARKETS.map((m, i) => (
-              <li
-                key={i}
-                className={`${s.reveal} ${s.marketCard}`}
-                style={{ transitionDelay: `${i * 70}ms` }}
-              >
-                <span className={s.mFlag} aria-hidden="true">{m.flag}</span>
-                <div>
-                  <div className={s.mCountry}>{m.country}</div>
-                  <div className={s.mCities}>{m.cities}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          PHILOSOPHY PULL-QUOTE
-          (Cialdini: Authority · Liking)
-      ══════════════════════════════════════════ */}
-      <div className={`${s.reveal} ${s.quoteSection}`}>
-        <div className={s.wrap}>
-          <blockquote className={s.quoteBlock}>
-            <span className={s.quoteOpen} aria-hidden="true">&ldquo;</span>
-            <p className={s.quoteText}>
-              The best negotiators never split the difference — they architect the
-              conversation so the other side <em>wants</em> to say yes.
-            </p>
-            <footer className={s.quoteSource}>
-              Inspired by Chris Voss &amp; Robert Cialdini
-            </footer>
-          </blockquote>
-          <p className={s.quoteComment}>
-            This is the philosophy behind every automation we build. We don&apos;t just
-            capture leads — we engineer the precise moment your prospect decides to call.
-          </p>
-        </div>
-      </div>
-
-
-      {/* ══════════════════════════════════════════
-          FAQ
-      ══════════════════════════════════════════ */}
-      <section id="faq" className={s.section}>
-        <div className={s.wrap}>
-          <div className={`${s.reveal} ${s.label}`}>FAQ</div>
-
-          <h2 className={`${s.reveal} ${s.h2}`}>
-            Questions that deserve<br />
-            <em>a straight answer.</em>
-          </h2>
-
-          <dl className={`${s.reveal} ${s.faqList}`}>
-            {FAQS.map((faq, i) => (
-              <div
-                key={i}
-                className={`${s.faqItem} ${openFaq === i ? s.faqItemOpen : ''}`}
-              >
-                <dt>
-                  <button
-                    className={s.faqBtn}
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                    aria-controls={`faq-body-${i}`}
-                  >
-                    <span>{faq.q}</span>
-                    <span className={s.faqIcon} aria-hidden="true">
-                      {openFaq === i ? '−' : '+'}
-                    </span>
-                  </button>
-                </dt>
-                <dd
-                  id={`faq-body-${i}`}
-                  className={s.faqBody}
-                  hidden={openFaq !== i}
-                >
-                  {faq.a}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          CONTACT / CTA
-          (Voss: anchoring + scarcity · Cialdini: Commitment)
-      ══════════════════════════════════════════ */}
-      <section id="contact" className={`${s.section} ${s.contactSection}`}>
-        <div className={s.contactGlow} aria-hidden="true" />
-        <div className={`${s.reveal} ${s.contactBox}`}>
-          <div className={s.label}>Let&apos;s Talk</div>
-
-          <h2 className={s.contactTitle}>
-            Your lead pipeline deserves<br />
-            <em>a serious upgrade.</em>
-          </h2>
-
-          <p className={s.contactBody}>
-            Book a 30-minute strategy call. We will map your current lead flow,
-            show you precisely where high-value prospects are slipping away, and
-            walk you through what an automated system looks like for your agency —
-            at zero cost and zero commitment.
-          </p>
-
-          {/* Cialdini: Scarcity + Reciprocity */}
-          <div className={s.scarcity}>
-            <span className={s.pulse} aria-hidden="true" />
-            Only 3 onboarding slots open this month
-          </div>
-
-          <a
-            href="https://calendly.com/b8technologies"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={s.btnPrimaryLg}
-          >
-            Book Your Free Strategy Call
-            <ArrowRight />
-          </a>
-
-          <p className={s.contactMicro}>
-            No sales pitch. No pressure. Just clarity about what&apos;s possible.
-          </p>
-
-          {/* Contact details */}
-          <div className={s.contactMeta}>
-            <a href="mailto:hello@b8-technologies.com" className={s.contactEmail}>
-              hello@b8-technologies.com
-            </a>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════
-          FOOTER
-      ══════════════════════════════════════════ */}
-      <footer className={s.footer}>
-        <div className={s.wrap}>
-          <div className={s.footerGrid}>
-
-            {/* Brand */}
-            <div className={s.footerBrand}>
-              <svg viewBox="0 0 90 60" className={s.footerLogo} aria-hidden="true">
-                <path
-                  d="M8 4 L8 56 L34 56 C44 56 52 49 52 40 C52 34 48 29 42 27
-                     C47 25 51 20 51 14 C51 8 45 4 35 4 Z
-                     M18 12 L33 12 C38 12 41 15 41 19 C41 23 38 26 33 26 L18 26 Z
-                     M18 34 L34 34 C40 34 42 37 42 41 C42 45 39 48 34 48 L18 48 Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M65 30 C65 22 70 16 77 16 C84 16 89 22 89 30 C89 38 84 44 77 44
-                     C70 44 65 38 65 30 Z
-                     M57 30 C57 22 62 16 69 16 C63 21 63 39 69 44 C62 44 57 38 57 30 Z"
-                  fill="currentColor"
-                  opacity="0.7"
-                />
-              </svg>
-              <p className={s.footerTagline}>
-                AI-powered CRM automation<br />for luxury real estate agencies.
+        {/* ══════════════════ PROBLEM ══════════════════ */}
+        <section className="section problem" id="problem">
+          <div className="container">
+            <div className="section__header reveal">
+              <div className="tag">The Problem</div>
+              <h2 className="section__title">
+                It Seems Like You're Leaving{' '}
+                <span className="text-crimson">Millions</span> on the Table
+              </h2>
+              <p className="section__sub">
+                High-net-worth individuals browse luxury listings at odd hours, across time zones —
+                and most agencies have no system to capture them when it matters.
               </p>
             </div>
 
-            {/* Navigation */}
-            <nav className={s.footerNav} aria-label="Footer navigation">
-              <div className={s.footerColHead}>Navigation</div>
-              {NAV_LINKS.map(l => (
-                <a key={l.href} href={l.href} className={s.footerLink}>{l.label}</a>
+            <div className="problem__grid">
+              {problems.map((item, i) => (
+                <div key={item.title} className={`problem__card reveal reveal--delay-${(i % 3) + 1}`}>
+                  <span className="problem__icon" aria-hidden="true">{item.icon}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </div>
               ))}
-            </nav>
-
-            {/* Contact */}
-            <div className={s.footerContact}>
-              <div className={s.footerColHead}>Contact</div>
-              <a href="mailto:hello@b8-technologies.com" className={s.footerLink}>
-                hello@b8-technologies.com
-              </a>
-              <a href="#contact" className={s.footerLink}>Book a Call</a>
             </div>
           </div>
+        </section>
 
-          <div className={s.footerBottom}>
-            <p>© {year} B8 Technologies LTD · Registered in Ireland</p>
-            <p className={s.footerAddr}>
-              77 Camden Street Lower, Saint Kevin&apos;s, Dublin, D02 XE80, Ireland
+        {/* ══════════════════ SYSTEM FLOW ══════════════════ */}
+        <section className="section system" id="system">
+          <div className="container">
+            <div className="section__header reveal">
+              <div className="tag">The B8 System</div>
+              <h2 className="section__title">
+                From Anonymous Visitor to{' '}
+                <span className="text-crimson">Qualified Lead</span> in Minutes
+              </h2>
+              <p className="section__sub">
+                We connect your clients' websites to a fully automated CRM pipeline that works
+                24/7 across every time zone — with zero manual intervention required.
+              </p>
+            </div>
+
+            <div className="system__flow reveal">
+              {systemNodes.map((node, i) => (
+                <div key={node.step} className="system__node">
+                  <div className="system__node-inner">
+                    <span className="system__node-icon" aria-hidden="true">{node.icon}</span>
+                    <div className="system__node-step">{node.step}</div>
+                    <h3 className="system__node-label">{node.label}</h3>
+                    <p className="system__node-desc">{node.desc}</p>
+                  </div>
+                  {i < systemNodes.length - 1 && (
+                    <div className="system__arrow" aria-hidden="true">→</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════ MARKETS ══════════════════ */}
+        <section className="section markets" id="markets">
+          <div className="container">
+            <div className="section__header reveal">
+              <div className="tag">Our Markets</div>
+              <h2 className="section__title">
+                Built for the World's Most{' '}
+                <span className="text-crimson">Competitive</span> Luxury Markets
+              </h2>
+              <p className="section__sub">
+                We understand the nuances — language, culture, buying cycles — of luxury real estate
+                in the Gulf and Asia. That's why our systems are calibrated for these exact markets.
+              </p>
+            </div>
+
+            <div className="markets__grid reveal">
+              {/* Gulf */}
+              <div className="markets__region">
+                <div className="markets__region-header">
+                  <span className="markets__region-icon" aria-hidden="true">🌙</span>
+                  <h3>Gulf Region</h3>
+                </div>
+                <ul className="markets__list">
+                  {gulfMarkets.map((c) => (
+                    <li key={c.name}>
+                      <span aria-label={c.name}>{c.flag}</span>
+                      <div>
+                        <strong>{c.name}</strong>
+                        <em>{c.detail}</em>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="markets__divider" aria-hidden="true" />
+
+              {/* Asia */}
+              <div className="markets__region">
+                <div className="markets__region-header">
+                  <span className="markets__region-icon" aria-hidden="true">🌏</span>
+                  <h3>Asia Pacific</h3>
+                </div>
+                <ul className="markets__list">
+                  {asiaMarkets.map((c) => (
+                    <li key={c.name}>
+                      <span aria-label={c.name}>{c.flag}</span>
+                      <div>
+                        <strong>{c.name}</strong>
+                        <em>{c.detail}</em>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════ PROCESS ══════════════════ */}
+        <section className="section process" id="process">
+          <div className="container">
+            <div className="section__header reveal">
+              <div className="tag">How It Works</div>
+              <h2 className="section__title">
+                Live in 3 Steps.{' '}
+                <span className="text-crimson">No Tech Team Required.</span>
+              </h2>
+              <p className="section__sub">
+                We do the heavy lifting. You show up to one call and watch your pipeline come alive.
+              </p>
+            </div>
+
+            <div className="process__steps">
+              {processSteps.map((step, i) => (
+                <div key={step.num} className={`process__step reveal reveal--delay-${i + 1}`}>
+                  <div className="process__step-num" aria-hidden="true">{step.num}</div>
+                  <div className="process__step-content">
+                    <div className="process__step-sub">{step.sub}</div>
+                    <h3>{step.title}</h3>
+                    <p>{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════ AUTHORITY / PROOF ══════════════════ */}
+        <section className="section authority">
+          <div className="container">
+            <div className="authority__inner">
+              <blockquote className="authority__quote reveal">
+                <p>
+                  "Before B8, our Tidio conversations just sat in a dashboard no one checked.
+                  Now every lead is enriched, scored, and in our CRM within three minutes.
+                  We closed two Dubai deals last quarter from leads we would have missed entirely."
+                </p>
+                <cite>— International Luxury Real Estate Agency, Dubai</cite>
+              </blockquote>
+
+              <div className="authority__stats reveal reveal--delay-2">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="authority__stat">
+                    <strong>{stat.num}</strong>
+                    <span>{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════ FAQ ══════════════════ */}
+        <section className="section faq" id="faq">
+          <div className="container">
+            <div className="section__header reveal">
+              <div className="tag">FAQ</div>
+              <h2 className="section__title">
+                Questions You're{' '}
+                <span className="text-crimson">Probably Thinking</span>
+              </h2>
+            </div>
+
+            <div className="faq__list reveal">
+              {faqs.map((item, i) => (
+                <div
+                  key={i}
+                  className={`faq__item ${openFaq === i ? 'faq__item--open' : ''}`}
+                >
+                  <button
+                    className="faq__question"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    aria-expanded={openFaq === i}
+                  >
+                    <span>{item.q}</span>
+                    <span className="faq__icon" aria-hidden="true">
+                      {openFaq === i ? '−' : '+'}
+                    </span>
+                  </button>
+                  <div className="faq__answer" aria-hidden={openFaq !== i}>
+                    <p>{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════ FINAL CTA ══════════════════ */}
+        <section className="section cta-section" id="cta">
+          <div className="container">
+            <div className="cta-section__inner reveal">
+              <div className="tag">Let's Talk</div>
+
+              <h2 className="cta-section__title">
+                How Much Revenue Are You{' '}
+                <span className="text-crimson">Currently Losing</span> Every Month?
+              </h2>
+
+              <p className="cta-section__sub">
+                Book a free 45-minute strategy call. We'll audit your current lead flow,
+                identify exactly where prospects are disappearing, and show you the ROI
+                of a fully automated pipeline — with real numbers, not promises.
+                No hard sell. Just clarity.
+              </p>
+
+              <div className="cta-section__scarcity">
+                <div className="scarcity-bar">
+                  <div className="scarcity-bar__fill" />
+                </div>
+                <p>
+                  <strong>🔴 Only 1 slot remaining this quarter.</strong>{' '}
+                  2 of 3 client spots already claimed.
+                </p>
+              </div>
+
+              <a
+                href={CALENDLY}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--primary btn--xl"
+              >
+                Claim Your Free Strategy Call →
+              </a>
+
+              <p className="cta-section__note">
+                No commitment. No sales pitch. Just 45 minutes of real clarity on your lead pipeline.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ══════════════════ FOOTER ══════════════════ */}
+      <footer className="footer">
+        <div className="container footer__inner">
+          <div className="footer__brand">
+            <img
+              src="/logo.png"
+              alt="B8 Technologies"
+              style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+            />
+            <p>
+              AI-powered CRM automation for luxury real estate agencies worldwide.
+              Capturing every lead, across every time zone.
             </p>
+          </div>
+
+          <nav className="footer__links" aria-label="Footer navigation">
+            <a href="#system">The System</a>
+            <a href="#markets">Markets</a>
+            <a href="#process">Process</a>
+            <a href="#faq">FAQ</a>
+            <a href={CALENDLY} target="_blank" rel="noopener noreferrer">
+              Book a Call
+            </a>
+            <a href="mailto:contact@b8-technologies.com">contact@b8-technologies.com</a>
+          </nav>
+
+          <div className="footer__legal">
+            <p>© {new Date().getFullYear()} B8 Technologies LTD. All rights reserved.</p>
+            <p>77 Camden Street Lower, Saint Kevin's</p>
+            <p>Dublin, D02 XE80, Ireland</p>
           </div>
         </div>
       </footer>
-
-    </main>
-  )
-}
-
-/* ─── ARROW ICON ────────────────────────────────────────────── */
-function ArrowRight() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ width: 16, height: 16 }}
-    >
-      <path
-        d="M4 10h12M10 4l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    </>
   )
 }
