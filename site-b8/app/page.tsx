@@ -254,7 +254,7 @@ export default function Home() {
           </p>
 
           <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '.5rem .9rem', marginBottom: '2.2rem' }}>
-            {['✦ 7 markets covered', '✦ Live in under 14 days', '✦ Built for your team', '✦ Controlled by your team.'].map(p => (
+            {['✦ 7 markets covered', '✦ Live in under 14 days', '✦ Controlled by your team.'].map(p => (
               <li key={p} style={{ fontSize: '.72rem', letterSpacing: '.06em', color: TEXT_MUTED }}>{p}</li>
             ))}
           </ul>
@@ -475,7 +475,7 @@ export default function Home() {
             Only 3 onboarding slots left open this month
           </div>
           <br />
-          <PrimaryBtn href="https://calendly.com/b8technologies" gold={GOLD} goldLight={GOLD_LIGHT} black={BLACK} external>
+          <PrimaryBtn href="https://calendly.com/b8-technologies" gold={GOLD} goldLight={GOLD_LIGHT} black={BLACK} external>
             Book Your Free Strategy Call
           </PrimaryBtn>
           <p style={{ display: 'block', fontSize: '.72rem', color: TEXT_MUTED, letterSpacing: '.04em', fontStyle: 'italic', margin: '1.2rem 0 2rem' }}>
