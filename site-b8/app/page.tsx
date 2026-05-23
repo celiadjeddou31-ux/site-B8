@@ -72,19 +72,19 @@ const MARKETS = [
 const FAQS = [
   { q: 'Who is B8 Technologies built for?',
     a: 'Luxury real estate agencies in the Gulf (Saudi Arabia, UAE, Qatar) and Asia (China, India, Malaysia, Singapore) that want to capture and convert high-net-worth leads — without growing their headcount.' },
-  { q: 'What exactly do you automate?',
-    a: 'We connect your website chatbot (Tidio) and contact forms to a Clay CRM pipeline, orchestrated via Make. Every lead is enriched, scored, and routed to the right agent in real time — 24 hours a day.' },
-  { q: 'How long does implementation take?',
-    a: "Most systems go live within 7–14 business days. We handle the full setup, integration, and QA. You don't touch a single line of code." },
-  { q: 'We already have a CRM — does that matter?',
-    a: 'Not at all. Clay and Make connect to over 200 tools. Your existing CRM becomes smarter without being replaced. We augment, not disrupt.' },
+  { q: 'Do I need technical knowledge to use your system?',
+    a: 'Not at all. We build and deliver everything in a simple and user-friendly way, with training included for your team.' },
+  { q: 'Can you work with our existing CRM or tools?',
+    a: "Yes. We can integrate with your current tools, CRM, WhatsApp workflows, forms, email platforms, and AI systems whenever possible." },
+  { q: 'What can be automated in our business?',
+    a: 'Lead qualification, follow-ups, email sequences, client reminders, WhatsApp, lead scoring, internal workflows, and much more.' },
   { q: 'What does it cost?',
-    a: "Every engagement is scoped to your specific lead volume and markets. Book a call — we'll map your current pipeline and send a transparent proposal within 48 hours. No hidden fees, ever." },
-  { q: 'Why B8 Technologies and not a generic automation agency?',
-    a: 'We combine luxury real estate lead psychology with technical automation precision. A buyer from Riyadh and one from Singapore have completely different decision journeys. Our systems know the difference.' },
+    a: "Every engagement is scoped to your specific lead volume and markets. Book a call, we'll map your current pipeline and send a transparent proposal within 48 hours. No hidden fees, ever." },
+  { q: 'Why is lead qualification important?',
+    a: 'Not every lead has the same value. Our systems help identify serious buyers faster based on criteria like budget, urgency, and buying intent - allowing your team to focus on high-potential clients first.' },
 ]
 
-const TOOLS = ['Gain Time', 'Hot Leads', 'CRM', 'Salesforce', 'HubSpot', 'Clay', '', 'Notion']
+const TOOLS = ['Gain Time', 'Hot Leads', 'CRM', 'Salesforce', 'HubSpot', 'Clay', 'Full Control', 'SAV']
 
 const STATUS_COLOR: Record<string, string> = {
   hot:  'bg-red-400 animate-pulse-glow',
