@@ -51,8 +51,8 @@ const RESULTS = [
 ]
 
 const SERVICES = [
-  { g: '◈', title: 'CRM Automation',         body: "Clay + Make pipelines that enrich, score, and route every lead. Your agents close deals — they never touch data entry again." },
-  { g: '◉', title: 'AI Lead Capture',         body: "Tidio chatbots trained on your listings. They qualify Gulf and Asian buyers in their cultural context, around the clock." },
+  { g: '◈', title: 'Tailor-Made CRM Automation', body: "Fully customised automation systems designed around your agency’s workflow —> from lead qualification and intelligent routing to automatic follow-ups, notifications, and personalised outreach. Every process works seamlessly from end to end." },
+  { g: '◉', title: 'Full Ownership & Training',  body: "You stay in complete control of your system at all times. We personally train your team in under an hour and remain available for ongoing support, updates, and optimisation whenever needed." },
   { g: '◇', title: 'Smart Form Intelligence', body: "Adaptive forms that extract intent, budget, and timeline from every visitor before the first conversation starts." },
   { g: '◈', title: 'Multi-Market Routing',    body: "Different qualification rules for Riyadh, Dubai, Singapore, and Mumbai. Cultural nuance engineered into every workflow." },
   { g: '◉', title: 'Pipeline Analytics',      body: "Live dashboards showing lead velocity, source quality, and conversion rates by market. Know exactly what's working." },
@@ -250,11 +250,11 @@ export default function Home() {
           </h1>
 
           <p style={{ fontSize: '1.05rem', color: TEXT_MUTED, maxWidth: 500, marginBottom: '1.6rem', lineHeight: 1.8 }}>
-            We build tailor-made AI automation systems for luxury real estate agencies — from lead capture to qualification and follow-up — so your team can focus on closing high-value deals instead of wasting time on manual workflows.
+            We build tailor-made AI automation systems for luxury real estate agencies, from lead capture to qualification and follow-up, so your team can focus on closing high-value deals instead of wasting time on manual workflows.
           </p>
 
           <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '.5rem .9rem', marginBottom: '2.2rem' }}>
-            {['✦ 7 markets covered', '✦ Live in under 14 days', '✦ Zero setup fee'].map(p => (
+            {['✦ 7 markets covered', '✦ Live in under 14 days', '✦ Built for your team', '✦ Controlled by your team.'].map(p => (
               <li key={p} style={{ fontSize: '.72rem', letterSpacing: '.06em', color: TEXT_MUTED }}>{p}</li>
             ))}
           </ul>
@@ -336,7 +336,7 @@ export default function Home() {
           <SectionLabel gold={GOLD}>The Method</SectionLabel>
           <H2 cream={CREAM} gold={GOLD}>From web visitor to<br /><em>qualified prospect</em> in 90 seconds.</H2>
           <p className="reveal" style={{ fontSize: '1rem', color: TEXT_MUTED, maxWidth: 560, lineHeight: 1.8, marginBottom: '3.5rem' }}>
-            Most luxury agencies lose 70 % of their inbound leads to silence. We engineer the system that closes that gap — permanently.
+            Most luxury agencies lose 70 % of their inbound leads to silence. We engineer the system that closes that gap, permanently.
           </p>
           <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {STEPS.map((step, i) => (
@@ -419,7 +419,7 @@ export default function Home() {
           <blockquote style={{ position: 'relative', maxWidth: 780, margin: '0 auto 2rem', textAlign: 'center' }}>
             <span aria-hidden="true" style={{ position: 'absolute', top: '-2.5rem', left: '50%', transform: 'translateX(-50%)', fontFamily: "'Cormorant Garamond', serif", fontSize: '7rem', color: 'rgba(170,2,40,.1)', lineHeight: 1, userSelect: 'none' }}>&ldquo;</span>
             <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.45rem, 2.8vw, 2.1rem)', color: CREAM, fontWeight: 300, lineHeight: 1.45, fontStyle: 'italic', position: 'relative' }}>
-              The best negotiators never split the difference — they architect the conversation so the other side{' '}
+              The best negotiators never split the difference, they architect the conversation so the other side{' '}
               <em style={{ fontStyle: 'normal', color: GOLD }}>wants</em> to say yes.
             </p>
             <footer style={{ fontSize: '.66rem', letterSpacing: '.18em', textTransform: 'uppercase', color: TEXT_MUTED, marginTop: '1.4rem' }}>
@@ -472,7 +472,7 @@ export default function Home() {
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', fontSize: '.7rem', letterSpacing: '.14em', textTransform: 'uppercase', color: GOLD, marginBottom: '2rem' }}>
             <span className="animate-pulse-glow" style={{ width: 7, height: 7, borderRadius: '50%', background: GOLD, display: 'inline-block' }} />
-            Only 3 onboarding slots open this month
+            Only 3 onboarding slots left open this month
           </div>
           <br />
           <PrimaryBtn href="https://calendly.com/b8technologies" gold={GOLD} goldLight={GOLD_LIGHT} black={BLACK} external>
@@ -484,7 +484,7 @@ export default function Home() {
           <a href="mailto:celia.barquis@b8-technologies.com" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = GOLD)}
             onMouseLeave={e => (e.currentTarget.style.color = TEXT_MUTED)}>
-            hello@b8-technologies.com
+            celia.barquis@b8-technologies.com
           </a>
         </div> 
       </section>
@@ -497,7 +497,7 @@ export default function Home() {
             <div>
               <LogoSvg color={GOLD} size={96} style={{ marginBottom: '1.4rem' }} />
               <p style={{ fontSize: '.84rem', color: TEXT_MUTED, lineHeight: 1.7 }}>
-                AI-powered CRM automation<br />for luxury real estate agencies.
+                AI-powered CRM automation<br />for prenium real estate agencies.
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '.65rem' }}>
@@ -512,10 +512,10 @@ export default function Home() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '.65rem' }}>
               <div style={{ fontSize: '.62rem', letterSpacing: '.22em', textTransform: 'uppercase', color: GOLD, marginBottom: '.4rem' }}>Contact</div>
-              <a href="mailto:hello@b8-technologies.com" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
+              <a href="mailto:celia.barquis@b8-technologies.com" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
                 onMouseEnter={e => (e.currentTarget.style.color = CREAM)}
                 onMouseLeave={e => (e.currentTarget.style.color = TEXT_MUTED)}>
-                hello@b8-technologies.com
+                celia.barquis@b8-technologies.com
               </a>
               <a href="#contact" style={{ fontSize: '.82rem', color: TEXT_MUTED, transition: 'color .2s' }}
                 onMouseEnter={e => (e.currentTarget.style.color = CREAM)}
