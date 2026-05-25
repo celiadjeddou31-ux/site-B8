@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Script from "next/script";
-
 
 export const metadata: Metadata = {
   title: 'B8 Technologies — CRM Intelligence for Real Estate Agencies',
@@ -24,12 +22,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}
-        <Script
-          src="//code.tidio.co/qupx5p1snwuwe4tq9u8yvxzo2kqta72b.js"
-          strategy="afterInteractive"
-        />
-      </body>
+      <script src="//code.tidio.co/qupx5p1snwuwe4tq9u8yvxzo2kqta72b.js" async></script>
+      <body>{children}</body>
     </html>
   )
 }
