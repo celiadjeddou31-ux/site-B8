@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Opportunity Calculator — AI Infrastructure for Real Estate</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><img src="B8-logo-transp.png" alt="B8"></div>
+  <!--  <nav>
+    <a href="index.html">Platform</a>
+    <a href="audit.html">Audit</a>
+    </nav>
+  -->
+
+  <div class="topbar-cta">
+    <button class="btn-solid" onclick="window.location.href='index.html'">Try it</button>
+    <button class="btn-solid" onclick="window.location.href='audit.html'">Request a demo</button>
+  </div>
+</header>
+
+<section class="hero-head">
+  <p class="hero-head-sub">
+    ROI Calculator
+  </p>
+  <h1>Estimate your<br>Annual revenue opportunity</h1>
+</section>
+
+<main class="calc-shell">
+  <div class="calc-card">
+
+    <!-- LEFT: inputs -->
+    <div class="left-col">
+
+      <div class="preset-row">
+        <button class="preset active" data-preset="boutique" onclick="applyPreset('boutique', this)">Boutique</button>
+        <button class="preset" data-preset="midsize" onclick="applyPreset('midsize', this)">Mid-size</button>
+        <button class="preset" data-preset="premium" onclick="applyPreset('premium', this)">Premium</button>
+      </div>
+
+      <div class="panel-inner">
+        <div class="panel-title">YOUR OPERATION</div>
+
+        <div class="field">
+          <div class="field-label">
+            <span class="name">Incoming leads / month</span>
+            <i class="info-dot">i</i>
+          </div>
+          <div class="field-row">
+            <input type="range" id="leads" min="10" max="1000" step="10" value="200">
+            <input type="number" class="num-box" id="leadsNum" value="200">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">
+            <span class="name">Number of agents</span>
+            <i class="info-dot">i</i>
+          </div>
+          <div class="field-row">
+            <input type="range" id="agents" min="1" max="60" step="1" value="3">
+            <input type="number" class="num-box" id="agentsNum" value="3">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">
+            <span class="name">Response rate</span>
+            <i class="info-dot">i</i>
+          </div>
+          <div class="field-row">
+            <input type="range" id="resp" min="0" max="100" step="1" value="50">
+            <input type="number" class="num-box" id="respNum" value="50">
+            <span class="unit">%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">
+            <span class="name">Qualification rate</span>
+            <i class="info-dot">i</i>
+          </div>
+          <div class="field-row">
+            <input type="range" id="qual" min="0" max="100" step="1" value="45">
+            <input type="number" class="num-box" id="qualNum" value="45">
+            <span class="unit">%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">
+            <span class="name">Appointment rate</span>
+            <i class="info-dot">i</i>
+          </div>
+          <div class="field-row">
+            <input type="range" id="rdv" min="0" max="60" step="1" value="10">
+            <input type="number" class="num-box" id="rdvNum" value="10">
+            <span class="unit">%</span>
+          </div>
+        </div>
+
+        <div class="finetune-toggle" onclick="toggleFinetune()">
+          <span>Refine the estimate</span>
+          <span class="plus" id="finetunePlus">+</span>
+        </div>
+
+        <div class="finetune-fields" id="finetuneFields">
+
+          <div class="field">
+            <div class="field-label">
+              <span class="name">Average first response time</span>
+              <i class="info-dot">i</i>
+            </div>
+            <div class="field-row">
+              <input type="range" id="delay" min="0.1" max="24" step="0.1" value="4.5">
+              <input type="number" class="num-box" id="delayNum" value="4.5">
+              <span class="unit">h</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="name">Closing rate</span>
+              <i class="info-dot">i</i>
+            </div>
+            <div class="field-row">
+              <input type="range" id="close" min="0" max="15" step="0.1" value="1.2">
+              <input type="number" class="num-box" id="closeNum" value="1.2">
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="name">Average transaction value</span>
+              <i class="info-dot">i</i>
+            </div>
+            <div class="field-row">
+              <input type="range" id="value" min="200000" max="15000000" step="50000" value="2800000">
+              <input type="number" class="num-box wide" id="valueNum" value="2800000">
+              <span class="unit">AED</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="name">Average commission</span>
+              <i class="info-dot">i</i>
+            </div>
+            <div class="field-row">
+              <input type="range" id="commission" min="0.5" max="6" step="0.1" value="2">
+              <input type="number" class="num-box" id="commissionNum" value="2">
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: hero result -->
+    <div class="right-col">
+
+      <div class="hero-eyebrow">
+        ESTIMATED ANNUAL REVENUE OPPORTUNITY
+      </div>
+
+      <div class="hero-number">
+        <span class="cur">AED</span>
+        <span id="heroValue">0</span>
+      </div>
+
+      <div class="hero-sub">
+        Commission gap between your current funnel and an Tech-optimized funnel,
+        projected over 12 months.
+      </div>
+
+      <div class="stat-grid">
+
+        <div class="stat-box">
+          <div class="v" id="statVentesGain">0</div>
+          <div class="l">Recovered sales / year</div>
+        </div>
+
+        <div class="stat-box">
+          <div class="v" id="statDelay">— → —</div>
+          <div class="l">First response time</div>
+        </div>
+
+      </div>
+
+      <div class="stat-box wide">
+        <div class="wide-row">
+          <span class="v" id="statClose">— → —</span>
+          <span class="l">Lead → sale closing rate</span>
+        </div>
+      </div>
+
+      <div class="breakdown-toggle" onclick="toggleBreakdown()">
+        <div class="bt-label">VIEW BREAKDOWN</div>
+        <div class="bt-link">
+          Calculation details <span id="breakdownPlus">+</span>
+        </div>
+      </div>
+
+      <div class="breakdown-mini" id="breakdownMini">
+        <div class="bm-row">
+          <span>Sales / year</span>
+          <span id="bmVentes">— → —</span>
+        </div>
+
+        <div class="bm-row">
+          <span>Agency revenue</span>
+          <span id="bmCa">— → —</span>
+        </div>
+
+        <div class="bm-row">
+          <span>Commissions</span>
+          <span id="bmCommission">— → —</span>
+        </div>
+      </div>
+
+      <button class="cta-detailed" id="detailedBtn" onclick="toggleDetailed()">
+        Access the detailed calculator
+      </button>
+
+      <div class="cta-sub">
+        Full funnel, best-in-class scenario and commission comparison.
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DETAILED SECTION (collapsed by default) -->
+  <div class="detailed-section" id="detailedSection">
+
+    <div class="panel detail-panel">
+
+      <div class="card-head">
+        <h3>Conversion Funnel</h3>
+
+        <div class="scenario-toggle">
+          <button class="active" data-sc="actuel" onclick="setFunnelScenario('actuel', this)">
+            Current
+          </button>
+
+          <button data-sc="opt" onclick="setFunnelScenario('opt', this)">
+            Optimized
+          </button>
+
+          <button data-sc="top" onclick="setFunnelScenario('top', this)">
+            Best-in-class
+          </button>
+        </div>
+      </div>
+
+      <div class="funnel" id="funnelContainer"></div>
+
+    </div>
+
+    <div class="panel detail-panel">
+
+      <div class="card-head">
+        <h3>Commissions by Scenario</h3>
+      </div>
+
+      <canvas id="compareChart"></canvas>
+
+      <table class="scenario-table" id="scenarioTable">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Sales / year</th>
+            <th>Agency revenue</th>
+            <th>Commissions</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+      </table>
+
+      <div class="footnote">
+        Illustrative estimate with an uncertainty range of approximately ±30–35%,
+        calculated using average conversion rates observed in the Dubai real estate
+        market (Dubai Land Department, 2026 market data). The optimized scenario
+        assumes an automated response within &lt; 15 minutes and AI follow-up for
+        every lead; the best-in-class scenario reflects leading market practices
+        (CRM + advanced AI). This figure is not a guarantee of results.
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  © 2026 B8 Technologies LTD · Registered in Ireland
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
