@@ -1,26 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-:root{
-  --page-bg-1: #EEF1FF;
-  --page-bg-2: #F8F9FF;
-  --ink: #0B0E17;
-  --ink-dim: #545B6E;
+:root {
+  /* Fonds principaux — blanc cassé / crème du logo */
+  --page-bg-1: #F6F1DF;
+  --page-bg-2: #FCFAF2;
 
-  --card-bg: #0B1130;
-  --panel-dark: #12183A;
-  --panel-darker: #0D1330;
-  --black-card: #05070E;
-  --line: rgba(255,255,255,0.09);
-  --line-soft: rgba(255,255,255,0.06);
+  /* Couleurs de marque — bordeaux du logo */
+  --ink: #7F1634;
+  --ink-dim: #A64A62;
 
-  --blue: #3D5AFE;
-  --blue-bright: #6C7CFF;
-  --teal: #5EEAD4;
-  --green: #86EFAC;
+  /* Cartes et panneaux — bordeaux très sombre */
+  --card-bg: #24131B;
+  --panel-dark: #301720;
+  --panel-darker: #1C1016;
+  --black-card: #10090D;
 
-  --text: #F4F5FA;
-  --text-dim: #99A0BC;
-  --text-faint: #6A7194;
+  /* Bordures */
+  --line: rgba(127, 22, 52, 0.14);
+  --line-soft: rgba(127, 22, 52, 0.08);
+
+  /* Couleur principale — remplace le bleu */
+  --blue: #7F1634;
+  --blue-bright: #A92F52;
+
+  /* Accents secondaires */
+  --teal: #db8b1bcc;
+  --green: #583a13;
+
+  /* Textes sur fonds sombres */
+  --text: #F8F3E8;
+  --text-dim: #C9BFC0;
+  --text-faint: #918187;
 
   --radius-lg: 24px;
   --radius-md: 14px;
@@ -28,6 +38,12 @@
 }
 
 *{ box-sizing:border-box; }
+
+.brand img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
 
 body{
   margin:0;
@@ -84,8 +100,8 @@ body{
   border-radius:var(--radius-lg);
   padding:40px;
   background:
-    radial-gradient(680px 420px at 88% 8%, rgba(61,90,254,0.55), transparent 60%),
-    radial-gradient(600px 400px at 10% 100%, rgba(94,234,212,0.12), transparent 55%),
+    radial-gradient(680px 420px at 88% 8%, rgba(140, 57, 9, 0.55), transparent 60%),
+    radial-gradient(600px 400px at 10% 100%, rgba(121, 40, 8, 0.12), transparent 55%),
     var(--card-bg);
   display:grid; grid-template-columns: 400px 1fr; gap:28px;
   box-shadow: 0 30px 80px -30px rgba(20,30,90,0.45);
